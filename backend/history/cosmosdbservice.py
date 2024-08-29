@@ -2,7 +2,7 @@ import uuid
 from datetime import datetime
 from azure.cosmos.aio import CosmosClient
 from azure.cosmos import exceptions
-  
+
 class CosmosConversationClient():
     
     def __init__(self, cosmosdb_endpoint: str, credential: any, database_name: str, container_name: str, enable_message_feedback: bool = False):
@@ -10,6 +10,7 @@ class CosmosConversationClient():
         self.credential = credential
         self.database_name = database_name
         self.container_name = container_name
+       
         self.enable_message_feedback = enable_message_feedback
         try:
             self.cosmosdb_client = CosmosClient(self.cosmosdb_endpoint, credential=credential)
@@ -26,12 +27,13 @@ class CosmosConversationClient():
         
         try:
             self.container_client = self.database_client.get_container_client(container_name)
+            self.ratings_container_client = self.database_client.get_container_client("ratings")
         except exceptions.CosmosResourceNotFoundError:
             raise ValueError("Invalid CosmosDB container name") 
         
 
     async def ensure(self):
-        if not self.cosmosdb_client or not self.database_client or not self.container_client:
+        if not self.cosmosdb_client or not self.database_client or not self.container_client or not self.ratings_container_client:
             return False, "CosmosDB client not initialized correctly"
         try:
             database_info = await self.database_client.read()
@@ -105,6 +107,25 @@ class CosmosConversationClient():
         
         return conversations
 
+
+    async def get_rating(self, conversation_id):
+        parameters = [
+            {
+                'name': '@conversation_id',
+                'value': conversation_id
+            }
+        ]
+        query = f"SELECT * FROM c where c.rating_id = @conversation_id"
+        ratings = []
+        async for item in self.container_client.query_items(query=query, parameters=parameters):
+            ratings.append(item)
+
+        ## if no conversations are found, return None
+        if len(ratings) == 0:
+            return None
+        else:
+            return ratings[0]
+
     async def get_conversation(self, user_id, conversation_id):
         parameters = [
             {
@@ -126,7 +147,25 @@ class CosmosConversationClient():
             return None
         else:
             return conversations[0]
- 
+        
+    async def create_sessionrating(self, conversation_id, startTime, endTime, rating):
+        rating_id = str(uuid.uuid4())
+        rating = {
+            'id': rating_id,  
+            'rating_id': conversation_id,
+            'startTime': startTime,
+            'endTime':endTime,
+            'rating': rating
+        }
+        resp = await self.container_client.upsert_item(rating)
+        if resp:
+            ratingFound = await self.get_rating(conversation_id)
+            if not ratingFound:
+                return "Rating not found"
+            return resp
+        else:
+            return False
+
     async def create_message(self, uuid, conversation_id, user_id, input_message: dict):
         message = {
             'id': uuid,

@@ -1,6 +1,6 @@
 import { chatHistorySampleData } from '../constants/chatHistory'
 
-import { ChatMessage, Conversation, ConversationRequest, CosmosDBHealth, CosmosDBStatus, UserInfo } from './models'
+import { ChatMessage, Conversation, SessionRating, ConversationRequest, CosmosDBHealth, CosmosDBStatus, UserInfo } from './models'
 
 export async function conversationApi(options: ConversationRequest, abortSignal: AbortSignal): Promise<Response> {
   const response = await fetch('/conversation', {
@@ -108,6 +108,35 @@ export const historyRead = async (convId: string): Promise<ChatMessage[]> => {
     .catch(_err => {
       console.error('There was an issue fetching your data.')
       return []
+    })
+  return response
+}
+
+export const sessionRatingGenerate = async (
+  sessionRating: SessionRating,
+  abortSignal: AbortSignal,
+  convId?: string
+): Promise<Response> => {
+  let body
+  if (convId) {
+    body = JSON.stringify(sessionRating)
+  } 
+  console.log("convID: "+convId)
+  console.log(body)
+  const response = await fetch('/sessionRating/generate', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: body,
+    signal: abortSignal
+  })
+    .then(res => {
+      return res
+    })
+    .catch(_err => {
+      console.error('There was an issue fetching your data.')
+      return new Response()
     })
   return response
 }

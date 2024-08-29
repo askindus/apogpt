@@ -27,12 +27,14 @@ import {
   getUserInfo,
   Conversation,
   historyGenerate,
+  sessionRatingGenerate,
   historyUpdate,
   historyClear,
   ChatHistoryLoadingState,
   CosmosDBStatus,
   ErrorMessage,
   ExecResults,
+  SessionRating,
 } from "../../api";
 import { Answer } from "../../components/Answer";
 import { QuestionInput } from "../../components/QuestionInput";
@@ -87,7 +89,7 @@ const Chat = () => {
     setIsDialogOpen(false);
   };
 
-  const handleRatingSubmit = (rating: number) => {
+  const handleRatingSubmit = async (rating: number) => {
     //setRatingResult(rating);
     console.log("results")
     console.log('Rating submitted:', rating);
@@ -96,8 +98,11 @@ const Chat = () => {
     console.log(messages);
     clearChat();
 
-    
-
+    let id = appStateContext?.state.currentChat?.id ? appStateContext?.state.currentChat?.id : 'undefined'
+    console.log('convid: '+id)
+    if(id!='undefined')
+      
+      await saveSessionRatingWithCosmosDB(id, rating) 
 
     setProcessMessages(messageStatus.Processing)
     setMessages([])
@@ -333,7 +338,37 @@ const Chat = () => {
 
     return abortController.abort()
   }
+  const saveSessionRatingWithCosmosDB = async (conversationId: string, rating: number) => {
+    const abortController = new AbortController()
+    abortFuncs.current.unshift(abortController)
+    //api call params set here (generate)
+    let request: ConversationRequest
+    let conversation
+    if (conversationId) {
+      const sessionRating: SessionRating = {
+        startTime: startDateTime,
+        endTime: new Date(),
+        conversation_id: conversationId,
+        rating: rating
+      }
+      console.log(sessionRating)
+      try {
+        const response = conversationId
+          ? await sessionRatingGenerate(sessionRating, abortController.signal, conversationId)
+          : console.log("no conv id") 
+      }
+      catch{
+        console.log("error generating sessionrating")
+      }
+    }
+    //   {
+    //   console.error('Conversation not found.')
+    //   abortFuncs.current = abortFuncs.current.filter(a => a !== abortController)
+    //   return
+    // } else {
 
+    // }
+  }
   const makeApiRequestWithCosmosDB = async (question: string, conversationId?: string) => {
     setIsLoading(true)
     setShowLoadingMessage(true)
@@ -1012,7 +1047,7 @@ const Chat = () => {
               </Stack>
               <QuestionInput
                 clearOnSend
-                placeholder="Type a new question..."
+                placeholder="Bitte geben Sie ihre Frage ein ..."
                 disabled={isLoading}
                 visible={isVisible}
                 onSend={(question, id) => {

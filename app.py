@@ -409,6 +409,45 @@ def get_frontend_settings():
         logging.exception("Exception in /frontend_settings")
         return jsonify({"error": str(e)}), 500
 
+## Conversation History API ##
+@bp.route("/sessionRating/generate", methods=["POST"])
+async def add_sessionRating():
+    await cosmos_db_ready.wait()
+    authenticated_user = get_authenticated_user_details(request_headers=request.headers)
+    user_id = authenticated_user["user_principal_id"]
+
+    ## check request for conversation_id
+    request_json = await request.get_json()
+
+    #conversation_id = request_json.get("conversation_id", None)
+    conversation_id = request_json["conversation_id"]
+    startTime = request_json["startTime"]
+    endTime = request_json["endTime"]
+    rating = request_json["rating"]
+
+
+    try:
+        # make sure cosmos is configured
+        if not current_app.cosmos_conversation_client:
+            raise Exception("CosmosDB is not configured or not working")
+        else:
+            rating = request_json["rating"]
+            createdRatingValue = await current_app.cosmos_conversation_client.create_sessionrating(
+                conversation_id=conversation_id,
+                startTime=startTime,
+                endTime=endTime,
+                rating=rating
+            )
+            if createdRatingValue == "Rating not found":
+                raise Exception(
+                    "Conversation not found for the given conversation ID: "
+                    + conversation_id
+                    + "."
+                )
+            return createdRatingValue
+    except Exception as e:
+        logging.exception("Exception in /sessionRating/generate")
+        return jsonify({"error": str(e)}), 500
 
 ## Conversation History API ##
 @bp.route("/history/generate", methods=["POST"])

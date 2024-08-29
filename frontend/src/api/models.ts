@@ -147,6 +147,13 @@ export type FrontendSettings = {
   sanitize_answer?: boolean
 }
 
+export type SessionRating = {
+  conversation_id: string,
+  rating: number,
+  startTime: Date,
+  endTime: Date
+}
+
 export enum Feedback {
   Neutral = 'neutral',
   Positive = 'positive',
