@@ -12,9 +12,10 @@ interface Props {
   placeholder?: string
   clearOnSend?: boolean
   conversationId?: string
+  visible: boolean
 }
 
-export const QuestionInput = ({ onSend, disabled, placeholder, clearOnSend, conversationId }: Props) => {
+export const QuestionInput = ({ onSend, disabled, placeholder, clearOnSend, conversationId, visible }: Props) => {
   const [question, setQuestion] = useState<string>('')
 
   const sendQuestion = () => {
@@ -45,9 +46,9 @@ export const QuestionInput = ({ onSend, disabled, placeholder, clearOnSend, conv
   }
 
   const sendQuestionDisabled = disabled || !question.trim()
-
+  const inputVisible = visible;
   return (
-    <Stack horizontal className={styles.questionInputContainer}>
+    <Stack horizontal className={styles.questionInputContainer} style={{visibility: inputVisible ? 'visible' : 'hidden' }}>
       <TextField
         className={styles.questionInputTextArea}
         placeholder={placeholder}

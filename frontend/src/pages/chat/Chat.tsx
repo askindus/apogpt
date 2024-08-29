@@ -13,6 +13,7 @@ import { nord } from 'react-syntax-highlighter/dist/esm/styles/prism'
 
 import styles from './Chat.module.css'
 import Contoso from '../../assets/Contoso.svg'
+import BankIcon from '../../assets/bank.svg'
 import { XSSAllowTags } from '../../constants/sanatizeAllowables'
 
 import {
@@ -38,7 +39,7 @@ import { QuestionInput } from "../../components/QuestionInput";
 import { ChatHistoryPanel } from "../../components/ChatHistory/ChatHistoryPanel";
 import { AppStateContext } from "../../state/AppProvider";
 import { useBoolean } from "@fluentui/react-hooks";
-
+import RatingDialog from "../../components/RatingDialog/RatingDialog";
 const enum messageStatus {
   NotRunning = 'Not Running',
   Processing = 'Processing',
@@ -65,6 +66,49 @@ const Chat = () => {
   const [errorMsg, setErrorMsg] = useState<ErrorMessage | null>()
   const [logo, setLogo] = useState('')
 
+  const [startDateTime, setCurrentDateTime] = useState<Date>(new Date());
+  // State to manage the visibility of the div
+  const [isVisible, setIsVisible] = useState(false);
+  // Function to toggle the visibility
+  const toggleVisibility = () => {
+    setCurrentDateTime(new Date());
+    console.log(startDateTime);
+    setIsVisible(!isVisible);
+  };
+  // RATINGDIALOG
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [ratingResult, setRatingResult] = useState<number | null>(null);
+
+  const handleOpenDialog = () => {
+    setIsDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
+  };
+
+  const handleRatingSubmit = (rating: number) => {
+    //setRatingResult(rating);
+    console.log("results")
+    console.log('Rating submitted:', rating);
+    console.log(startDateTime);
+    console.log(new Date())
+    console.log(messages);
+    clearChat();
+
+    
+
+
+    setProcessMessages(messageStatus.Processing)
+    setMessages([])
+    setIsCitationPanelOpen(false);
+    setActiveCitation(undefined);
+    appStateContext?.dispatch({ type: 'UPDATE_CURRENT_CHAT', payload: null });
+    setProcessMessages(messageStatus.Done)
+    setIsVisible(false);
+    //newChat();
+  };
+  //RATINGDIALOG
   const errorDialogContentProps = {
     type: DialogType.close,
     title: errorMsg?.title,
@@ -107,7 +151,7 @@ const Chat = () => {
 
   useEffect(() => {
     if (!appStateContext?.state.isLoading) {
-      setLogo(ui?.chat_logo || ui?.logo || Contoso)
+      setLogo(ui?.chat_logo || ui?.logo || BankIcon)
     }
   }, [appStateContext?.state.isLoading])
 
@@ -739,6 +783,10 @@ const Chat = () => {
     )
   }
 
+  const startbuttonvisible = () => {
+    return isVisible;
+  }
+
   return (
     <div className={styles.container} role="main">
       {showAuthMessage ? (
@@ -772,12 +820,61 @@ const Chat = () => {
         <Stack horizontal className={styles.chatRoot}>
           <div className={styles.chatContainer}>
             {!messages || messages.length < 1 ? (
+              <div>
               <Stack className={styles.chatEmptyState}>
                 <img src={logo} className={styles.chatIcon} aria-hidden="true" />
                 <h1 className={styles.chatEmptyStateTitle}>{ui?.chat_title}</h1>
                 <h2 className={styles.chatEmptyStateSubtitle}>{ui?.chat_description}</h2>
               </Stack>
+              <div className={styles.startButtonContainer}>
+              <CommandBarButton
+                                    role="button"
+                                    styles={{ 
+                                        icon: { 
+                                            color: '#FFFFFF',
+                                        },
+                                        root: {
+                                            color: '#FFFFFF',
+                                            background: startbuttonvisible() ? "#BDBDBD" : "radial-gradient(109.81% 107.82% at 100.1% 90.19%, #0F6CBD 33.63%, #2D87C3 70.31%, #8DDDD8 100%)",
+                                            cursor: startbuttonvisible() ? "" : "pointer"
+                                        },
+                                    }}
+                                    style={{ 'display': startbuttonvisible() ? "none": "block"}}
+                                    className={styles.startButton}
+                                    // {appStateContext?.state.isCosmosDBAvailable?.status !== CosmosDBStatus.NotConfigured ? styles.clearChatBroom : styles.clearChatBroomNoCosmos}
+                                    iconProps={{ iconName: 'Play' }}
+                                    onClick={toggleVisibility}
+                                    // disabled={disabledButton()}
+                                    aria-label="Session beginnen"
+                                    text="Session starten"
+                                />
+               </div>
+               </div>
             ) : (
+              <div>
+              <div className={styles.startButtonContainer}>
+              <CommandBarButton
+                  role="button"
+                  styles={{ 
+                      icon: { 
+                          color: '#FFFFFF',
+                      },
+                      root: {
+                          color: '#FFFFFF',
+                          background: startbuttonvisible() ? "#BDBDBD" : "radial-gradient(109.81% 107.82% at 100.1% 90.19%, #0F6CBD 33.63%, #2D87C3 70.31%, #8DDDD8 100%)",
+                          cursor: startbuttonvisible() ? "" : "pointer"
+                      },
+                  }}
+                  className={styles.startButton}
+                  // {appStateContext?.state.isCosmosDBAvailable?.status !== CosmosDBStatus.NotConfigured ? styles.clearChatBroom : styles.clearChatBroomNoCosmos}
+                  iconProps={{ iconName: 'Stop' }}
+                  onClick={handleOpenDialog}
+                  // disabled={disabledButton()}
+                  aria-label="Session beenden"
+                  text="Session Beenden"
+              />
+                  <RatingDialog open={isDialogOpen} onClose={handleCloseDialog} onSubmit={handleRatingSubmit}  /> 
+              </div>
               <div className={styles.chatMessageStream} style={{ marginBottom: isLoading ? '40px' : '0px' }} role="log">
                 {messages.map((answer, index) => (
                   <>
@@ -828,6 +925,7 @@ const Chat = () => {
                 )}
                 <div ref={chatMessageStreamEnd} />
               </div>
+              </div>
             )}
 
             <Stack horizontal className={styles.chatInput}>
@@ -847,7 +945,7 @@ const Chat = () => {
                 </Stack>
               )}
               <Stack>
-                {appStateContext?.state.isCosmosDBAvailable?.status !== CosmosDBStatus.NotConfigured && (
+                {/* {appStateContext?.state.isCosmosDBAvailable?.status !== CosmosDBStatus.NotConfigured && (
                   <CommandBarButton
                     role="button"
                     styles={{
@@ -872,7 +970,7 @@ const Chat = () => {
                     disabled={disabledButton()}
                     aria-label="start a new chat button"
                   />
-                )}
+                )} */}
                 <CommandBarButton
                   role="button"
                   styles={{
@@ -891,6 +989,7 @@ const Chat = () => {
                       background: '#F0F0F0'
                     }
                   }}
+                  style={{display: 'none'}}
                   className={
                     appStateContext?.state.isCosmosDBAvailable?.status !== CosmosDBStatus.NotConfigured
                       ? styles.clearChatBroom
@@ -915,6 +1014,7 @@ const Chat = () => {
                 clearOnSend
                 placeholder="Type a new question..."
                 disabled={isLoading}
+                visible={isVisible}
                 onSend={(question, id) => {
                   appStateContext?.state.isCosmosDBAvailable?.cosmosDB
                     ? makeApiRequestWithCosmosDB(question, id)
