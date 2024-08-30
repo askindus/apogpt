@@ -41,14 +41,14 @@ class _UiSettings(BaseSettings):
         env_ignore_empty=True
     )
 
-    title: str = "Bank GPT"
+    title: str = "apoGPT"
     logo: Optional[str] = None
     chat_logo: Optional[str] = None
-    chat_title: str = "Bank GPT"
+    chat_title: str = "apoGPT"
     chat_description: str = "Dieser ChatBot beantwortet alle Fragen rund um die Prozesse der Bank"
     favicon: str = "/favicon.ico"
-    show_share_button: bool = True
-    show_chat_history_button: bool = True
+    show_share_button: bool = False
+    show_chat_history_button: bool = False
 
 
 class _ChatHistorySettings(BaseSettings):
