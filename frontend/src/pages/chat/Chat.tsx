@@ -1071,7 +1071,7 @@ const Chat = () => {
                 horizontalAlign="space-between"
                 verticalAlign="center">
                 <span aria-label="Citations" className={styles.citationPanelHeader}>
-                  Citations
+                  Referenzen
                 </span>
                 <IconButton
                   iconProps={{ iconName: 'Cancel' }}

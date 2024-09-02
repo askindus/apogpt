@@ -81,7 +81,8 @@ export const Answer = ({ answer, onCitationClicked, onExectResultClicked }: Prop
     } else if (citation.filepath && citation.reindex_id) {
       citationFilename = `${citation.filepath} - Part ${citation.reindex_id}`
     } else {
-      citationFilename = `Citation ${index}`
+      
+      citationFilename = `Referenz ${index}: ${citation.title}`
     }
     return citationFilename
   }
@@ -311,8 +312,8 @@ export const Answer = ({ answer, onCitationClicked, onExectResultClicked }: Prop
                     role="button">
                     <span>
                       {parsedAnswer.citations.length > 1
-                        ? parsedAnswer.citations.length + ' references'
-                        : '1 reference'}
+                        ? parsedAnswer.citations.length + ' Referenzen'
+                        : 'Eine Referenz'}
                     </span>
                   </Text>
                   <FontIcon
@@ -325,7 +326,7 @@ export const Answer = ({ answer, onCitationClicked, onExectResultClicked }: Prop
             </Stack.Item>
           )}
           <Stack.Item className={styles.answerDisclaimerContainer}>
-            <span className={styles.answerDisclaimer}>AI-generated content may be incorrect</span>
+            <span className={styles.answerDisclaimer}>KI-generierte Inhalte sind möglicherweise falsch. Bitte überprüfen Sie das Ergebnis!</span>
           </Stack.Item>
           {!!answer.exec_results?.length && (
             <Stack.Item onKeyDown={e => (e.key === 'Enter' || e.key === ' ' ? toggleIsRefAccordionOpen() : null)}>
