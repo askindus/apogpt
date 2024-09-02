@@ -82,7 +82,7 @@ export const Answer = ({ answer, onCitationClicked, onExectResultClicked }: Prop
       citationFilename = `${citation.filepath} - Part ${citation.reindex_id}`
     } else {
       
-      citationFilename = `Referenz ${index}: ${citation.title}`
+      citationFilename = `Referenz ${index}`+ (citation.title && citation.title.length>0 ? `: ${citation.title}` : '')
     }
     return citationFilename
   }
