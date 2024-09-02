@@ -96,20 +96,20 @@ const Chat = () => {
     console.log(startDateTime);
     console.log(new Date())
     console.log(messages);
-    clearChat();
-
+    //clearChat();
+    
     let id = appStateContext?.state.currentChat?.id ? appStateContext?.state.currentChat?.id : 'undefined'
     console.log('convid: '+id)
     if(id!='undefined')
       
       await saveSessionRatingWithCosmosDB(id, rating) 
-
-    setProcessMessages(messageStatus.Processing)
-    setMessages([])
-    setIsCitationPanelOpen(false);
-    setActiveCitation(undefined);
-    appStateContext?.dispatch({ type: 'UPDATE_CURRENT_CHAT', payload: null });
-    setProcessMessages(messageStatus.Done)
+    newChat();
+    // setProcessMessages(messageStatus.Processing)
+    // setMessages([])
+    // setIsCitationPanelOpen(false);
+    // setActiveCitation(undefined);
+    // appStateContext?.dispatch({ type: 'UPDATE_CURRENT_CHAT', payload: null });
+    // setProcessMessages(messageStatus.Done)
     setIsVisible(false);
     //newChat();
   };
@@ -861,7 +861,7 @@ const Chat = () => {
                 <h1 className={styles.chatEmptyStateTitle}>{ui?.chat_title}</h1>
                 <h2 className={styles.chatEmptyStateSubtitle}>{ui?.chat_description}</h2>
               </Stack>
-              <div className={styles.startButtonContainer}>
+              <div className={`${styles.startButtonContainer} css_101`}>
               <CommandBarButton
                                     role="button"
                                     styles={{ 
