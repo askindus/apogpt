@@ -81,7 +81,7 @@ const Layout = () => {
           <Stack horizontal verticalAlign="center">
             <img src={logo} className={styles.headerIcon} aria-hidden="true" alt="" />
             <Link to="/" className={styles.headerTitleContainer}>
-              <h1 className={styles.headerTitle}> {{ title }} </h1>
+              <h1 className={styles.headerTitle}>apoGPT</h1>
             </Link>
           </Stack>
           <Stack horizontal tokens={{ childrenGap: 4 }} className={styles.shareButtonContainer}>
