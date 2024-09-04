@@ -25,7 +25,7 @@ const RatingDialog: React.FC<RatingDialogProps> = ({ open, onClose, onSubmit }) 
 
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Bitte bewerten Sie die Kommunikation mit dem Bot</DialogTitle>
+      <DialogTitle>Bitte bewerten Sie die Kommunikation mit dem ChatBot</DialogTitle>
       <DialogContent>
         <Box component="fieldset" mb={3} borderColor="transparent">
           <Rating
