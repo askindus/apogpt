@@ -642,11 +642,11 @@ const Chat = () => {
         // Returning the prettified error message
         if (reason !== '') {
           return (
-            'The prompt was filtered due to triggering Azure OpenAI’s content filtering system.\n' +
-            'Reason: This prompt contains content flagged as ' +
+            'Die Eingabeaufforderung wurde aufgrund der Auslösung des Inhaltsfiltersystems von Azure OpenAI gefiltert.\n' +
+            'Reason: Diese Eingabeaufforderung enthält Inhalte, die als gekennzeichnet sind ' +
             reason +
             '\n\n' +
-            'Please modify your prompt and retry. Learn more: https://go.microsoft.com/fwlink/?linkid=2198766'
+            'Bitte ändern Sie Ihre Eingabeaufforderung und versuchen Sie es erneut.'
           )
         }
       }
