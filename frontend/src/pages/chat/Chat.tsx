@@ -870,7 +870,8 @@ const Chat = () => {
                                         },
                                         root: {
                                             color: '#FFFFFF',
-                                            background: startbuttonvisible() ? "#BDBDBD" : "radial-gradient(109.81% 107.82% at 100.1% 90.19%, #0F6CBD 33.63%, #2D87C3 70.31%, #8DDDD8 100%)",
+                                            // background: startbuttonvisible() ? "#BDBDBD" : "radial-gradient(109.81% 107.82% at 100.1% 90.19%, #0F6CBD 33.63%, #2D87C3 70.31%, #8DDDD8 100%)",
+                                            background: startbuttonvisible() ? "#0F1E4D" : "#0F6CBD",
                                             cursor: startbuttonvisible() ? "" : "pointer"
                                         },
                                     }}
@@ -896,7 +897,8 @@ const Chat = () => {
                       },
                       root: {
                           color: '#FFFFFF',
-                          background: startbuttonvisible() ? "#BDBDBD" : "radial-gradient(109.81% 107.82% at 100.1% 90.19%, #0F6CBD 33.63%, #2D87C3 70.31%, #8DDDD8 100%)",
+                          //background: startbuttonvisible() ? "#BDBDBD" : "radial-gradient(109.81% 107.82% at 100.1% 90.19%, #0F6CBD 33.63%, #2D87C3 70.31%, #8DDDD8 100%)",
+                          background: startbuttonvisible() ? "#0F1E4D" : "#0F6CBD",
                           cursor: startbuttonvisible() ? "" : "pointer"
                       },
                   }}
