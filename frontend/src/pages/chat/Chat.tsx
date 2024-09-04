@@ -977,7 +977,7 @@ const Chat = () => {
                   onKeyDown={e => (e.key === 'Enter' || e.key === ' ' ? stopGenerating() : null)}>
                   <SquareRegular className={styles.stopGeneratingIcon} aria-hidden="true" />
                   <span className={styles.stopGeneratingText} aria-hidden="true">
-                    Stop generating
+                    Stoppe die Ausgabe
                   </span>
                 </Stack>
               )}
