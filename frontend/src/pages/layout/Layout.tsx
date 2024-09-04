@@ -79,7 +79,7 @@ const Layout = () => {
       <header className={styles.header} role={'banner'}>
         <Stack horizontal verticalAlign="center" horizontalAlign="space-between">
           <Stack horizontal verticalAlign="center">
-            // <img src={logo} className={styles.headerIcon} aria-hidden="true" alt="" /> 
+              {/* <img src={logo} className={styles.headerIcon} aria-hidden="true" alt="" />  */}
             <Link to="/" className={styles.headerTitleContainer}>
               <h1 className={styles.headerTitle}>apoGPT</h1>
             </Link>
