@@ -950,7 +950,7 @@ const Chat = () => {
                     <div className={styles.chatMessageGpt}>
                       <Answer
                         answer={{
-                          answer: "Generating answer...",
+                          answer: "Antwort wird erzeugt...",
                           citations: [],
                           plotly_data: null
                         }}
