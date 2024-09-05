@@ -24,7 +24,7 @@
   margin: 11px;
   white-space: normal;
   word-wrap: break-word;
-  max-width: 800px;
+  max-width: 100%;
   overflow-x: auto;
 }
 
@@ -60,6 +60,8 @@
   order: 1;
   flex-grow: 0;
 }
+
+
 
 .citationWrapper {
   margin-top: 8;

@@ -886,6 +886,8 @@ const Chat = () => {
                                 />
                </div>
                </div>
+
+
             ) : (
               <div>
               <div className={styles.startButtonContainer}>
@@ -1064,6 +1066,8 @@ const Chat = () => {
               />
             </Stack>
           </div>
+          <br/>
+          <br/>
           {/* Citation Panel */}
           {messages && messages.length > 0 && isCitationPanelOpen && activeCitation && (
             <Stack.Item className={styles.citationPanel} tabIndex={0} role="tabpanel" aria-label="Citations Panel">
