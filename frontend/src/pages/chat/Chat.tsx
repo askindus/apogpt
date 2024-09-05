@@ -857,6 +857,8 @@ const Chat = () => {
             {!messages || messages.length < 1 ? (
               <div>
               <Stack className={styles.chatEmptyState}>
+                <br/>
+                <br/>
                 <img src={logo} className={styles.chatIcon} aria-hidden="true" />
                 {/* <h1 className={styles.chatEmptyStateTitle}>{ui?.chat_title}</h1> */}
                 <h2 className={styles.chatEmptyStateSubtitle}>{ui?.chat_description}</h2>
@@ -1066,8 +1068,7 @@ const Chat = () => {
               />
             </Stack>
           </div>
-          <br/>
-          <br/>
+
           {/* Citation Panel */}
           {messages && messages.length > 0 && isCitationPanelOpen && activeCitation && (
             <Stack.Item className={styles.citationPanel} tabIndex={0} role="tabpanel" aria-label="Citations Panel">
