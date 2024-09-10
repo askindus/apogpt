@@ -50,7 +50,7 @@ export const Answer = ({ answer, onCitationClicked, onExectResultClicked }: Prop
     setChevronIsExpanded(!chevronIsExpanded)
     toggleIsRefAccordionOpen()
   }
-
+  //setChevronIsExpanded(true)
   useEffect(() => {
     setChevronIsExpanded(isRefAccordionOpen)
   }, [isRefAccordionOpen])
@@ -354,7 +354,7 @@ export const Answer = ({ answer, onCitationClicked, onExectResultClicked }: Prop
             </Stack.Item>
           )}
         </Stack>
-        {chevronIsExpanded && (
+        {true && (
           <div className={styles.citationWrapper}>
             {parsedAnswer.citations.map((citation, idx) => {
               return (

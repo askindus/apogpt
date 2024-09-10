@@ -35,6 +35,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-top:30px;
 }
 
 .chatEmptyStateTitle {
@@ -221,7 +222,7 @@
 }
 
 .stopGeneratingText {
-  width: 103px;
+  /* width: 103px; */
   height: 20px;
   font-style: normal;
   font-weight: 600;
@@ -233,6 +234,7 @@
   flex: none;
   order: 0;
   flex-grow: 0;
+  max-width: 100%;
 }
 
 .citationPanel {

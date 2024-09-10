@@ -857,8 +857,7 @@ const Chat = () => {
             {!messages || messages.length < 1 ? (
               <div>
               <Stack className={styles.chatEmptyState}>
-                <br/>
-                <br/>
+
                 <img src={logo} className={styles.chatIcon} aria-hidden="true" />
                 {/* <h1 className={styles.chatEmptyStateTitle}>{ui?.chat_title}</h1> */}
                 <h2 className={styles.chatEmptyStateSubtitle}>{ui?.chat_description}</h2>
@@ -1098,14 +1097,15 @@ const Chat = () => {
                 onClick={() => onViewSource(activeCitation)}>
                 {activeCitation.title}
               </h5>
-              <div tabIndex={0}>
-                <ReactMarkdown
+              <div tabIndex={0} style={{ width: "100%" }}>
+                <iframe src={`/data/${activeCitation.title}`} width="100%" height="1200px"></iframe>
+                {/* <ReactMarkdown
                   linkTarget="_blank"
                   className={styles.citationPanelContent}
                   children={DOMPurify.sanitize(activeCitation.content, { ALLOWED_TAGS: XSSAllowTags })}
                   remarkPlugins={[remarkGfm]}
                   rehypePlugins={[rehypeRaw]}
-                />
+                /> */}
               </div>
             </Stack.Item>
           )}

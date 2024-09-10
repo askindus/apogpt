@@ -5,6 +5,7 @@ import logging
 import uuid
 import httpx
 import asyncio
+from flask import Flask, render_template, send_from_directory
 from quart import (
     Blueprint,
     Quart,
@@ -38,6 +39,10 @@ from backend.utils import (
 
 bp = Blueprint("routes", __name__, static_folder="static", template_folder="static")
 
+app = Flask(__name__)
+# Ordner, in dem die PDFs gespeichert werden
+PDF_FOLDER = os.path.join('static', 'pdfs')
+
 cosmos_db_ready = asyncio.Event()
 
 
@@ -58,6 +63,10 @@ def create_app():
     
     return app
 
+@bp.route('/pdf/<filename>')
+async def pdf_view(filename):
+    # Sendet die PDF-Datei an den Client für die Anzeige im Web
+    return await send_from_directory(PDF_FOLDER, filename)
 
 @bp.route("/")
 async def index():
