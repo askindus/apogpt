@@ -1,13 +1,24 @@
-import react from '@vitejs/plugin-react'
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    viteStaticCopy({
+      targets: [
+        {
+          src: '/src/assets/pdf', // Der Quellordner oder die Datei(en), die kopiert werden sollen
+          dest: '../static/assets',
+        }
+      ]
+    })
+  ],
   build: {
-    outDir: '../static',
-    emptyOutDir: true,
-    sourcemap: true
+    outDir: '../static/', // Der Zielordner für die Build-Ausgabe
+    emptyOutDir: false,   // Entfernt den Inhalt des Ausgabeordners vor dem neuen Build
+    sourcemap: true      // Erzeugt Sourcemaps für Debugging
   },
   server: {
     proxy: {
@@ -15,4 +26,4 @@ export default defineConfig({
       '/chat': 'http://localhost:5000'
     }
   }
-})
+});
