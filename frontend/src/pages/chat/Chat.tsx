@@ -1098,7 +1098,7 @@ const Chat = () => {
                 {activeCitation.title}
               </h5>
               <div tabIndex={0} style={{ width: "100%" }}>
-                <iframe src={`/data/${activeCitation.title}`} width="100%" height="1200px"></iframe>
+                <iframe src={`assets/pdf/${activeCitation.title}`} width="100%" height="1200px"></iframe>
                 {/* <ReactMarkdown
                   linkTarget="_blank"
                   className={styles.citationPanelContent}
